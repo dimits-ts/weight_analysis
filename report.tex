@@ -1,0 +1,135 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[greek, english]{babel}
+\usepackage{alphabeta}
+\usepackage{libertine}
+\usepackage{graphicx}
+\usepackage{biblatex}[sorting=nty] % sort alphabetically
+\usepackage[table]{xcolor}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{makecell}
+\usepackage{setspace}
+\usepackage{geometry}
+
+\pagenumbering{arabic}
+\onehalfspacing % Set line spacing to 1.5
+\graphicspath{ {./output/} }
+\addbibresource{refs.bib}
+
+\def\code#1{\texttt{#1}}
+
+\title{\Huge Probability and statistics for data analysis\\ \LARGE 2nd Assignment }
+
+
+\begin{document}
+	
+	\begin{titlepage}
+		\maketitle
+		\begin{center}
+			
+			\LARGE Professors: I. Vrontos
+			
+			\large Athens University of Economics and Business
+			
+			\large MSc in Data Science
+			
+		\end{center}
+		
+	\end{titlepage}
+	
+	\tableofcontents
+	\newpage
+	
+	\section{ANOVA Testing}
+	
+	\subsection{One-way ANOVA Tests}
+	
+	The relationship between $W$ and $Y, X1, X2, X3, X4$ can be found in Figure \ref{fig::boxplots_1}. Specifically:
+	
+	\begin{itemize}
+		\item There are significant differences between X1 and W  on a $90\%$ confidence level $p = 0.0915$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.268$, K-S $p=0.1506$) and so does the homogeneity assumption (Lev $p=0.3367$).
+		
+		\item There are no statistically significant differences between X2 and W  on a $90\%$ confidence level $p = 0.128$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.8049$, K-S $p=0.2343$) and so does the homogeneity assumption (Lev $p=0.3412$).
+		
+		\item There are no statistically significant differences between X3 and W  on a $90\%$ confidence level $p = 0.876$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.2555$, K-S $p=0.1112$). We reject the homogeneity assumption on a $90\%$ confidence level (Lev $p=0.0007$) and as such our results may not be accurate.
+		
+		\item There are statistically significant differences between X2 and W on a $95\%$ confidence level $p = 0.0168$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.4243$, K-S $p=0.4261$) and so does the homogeneity assumption (Lev $p=0.4261$).
+		
+	\end{itemize}
+	 
+	
+	\begin{figure}
+		\includegraphics[width=8cm]{boxplots_1.png}
+		\centering
+		\caption{Boxplots of W in relation to the other variables.}
+		\label{fig::boxplots_1}
+	\end{figure}
+	
+	
+	\subsection{Graphical Representation of $X_i$ effect on Y depending on W}
+	
+	Figure \ref{fig::scatterplot_1} shows the relation of Y with the other variables $X_i, i=1,2,3,4$ depending on W.
+	
+	\begin{figure}
+		\includegraphics[width=8cm]{scatterplot_1.png}
+		\centering
+		\caption{Scatter-plot of Y and $X_i i=1,2,3,4$ depending on W.}
+		\label{fig::scatterplot_1}
+	\end{figure}
+	
+	
+	\subsection{Simple Regression}
+	
+	Table \ref{tab::simple_1} shows the basic model where $Y = \beta_1 X4 + \beta_0 + \epsilon, \epsilon \sim N(0, \sigma^2)$.
+	
+	\input{output/simple_1.tex}
+	
+	
+	\subsection{Multiple Regression}
+	
+	Table \ref{tab::multi_full_1} shows the full model  with base effects and interactions.
+	
+	\input{output/multi_full_1.tex}
+	
+	
+	\subsection{Checking the Full Model Assumptions}
+	
+	The model suffers from multi-collinearity ($GVIF > 10$) on most variables, meaning the model cannot be interpreted. We remove the variables with the biggest VIF scores and thus produce the model found in Table \ref{tab::multi_fixed_1}.
+	
+	We do not reject the normality assumption on the new model on a $95\%$ confidence level (S-W $p=0.2253$, K-S $p=0.5005$) nor the homogeneity assumption (Lev $p=0.2985$, Bart $p=0.4587$). Therefore the LS regression assumptions hold.
+	
+ 	\input{output/multi_fixed_1.tex}
+ 	
+ 	
+ 	\subsection{Stepwise Model Selection}
+	
+	We use the stepwise selection procedure with the full model being the valid model presented in Table \ref{tab::multi_fixed_1}.
+	
+	The resulting model can be found in Table \ref{tab::multi_optimal_1}. Note that the dimensionality of the model has indeed been significantly reduced and that almost all terms are statistically significant on a $95\%$ confidence level.
+	
+	The model presents no multi-colinearity issues. We do not reject the normality assumption on the new model on a $95\%$ confidence level (S-W $p=0.2006$, K-S $p=0.6342$) nor the homogeneity assumption (Lev $p=0.4434$, Bart $p=0.4434$). Therefore the LS regression assumptions hold.
+	
+	\input{output/multi_optimal_1.tex}
+	
+	
+	\subsection{Estimating Y}
+	
+	When $X1=120, X2=30, X3=10, X4=90, W=B$ the stepwise model presented in Table \ref{tab::multi_optimal_1} predicts a value of $Y=200.6143$ with a $95\%$ confidence interval of $(200.1456 \leq Y \leq 201.083)$.
+	
+	
+	\subsection{Categorizing Continuous Variable}
+	The contingency table can be found in \ref{fig::contigency_1}.
+	
+	Executing the two-way ANOVA test between Y and W*Z, we determine that there are statistically significant differences in the means of Y depending on the two variables on a $95\%$ confidence interval (W: $p=5.12e-09$, Z: $p=0$) but not their interaction (W:Z $p= 0.305$). Therefore while the means deviate, the slope of Y to Z and Y to W does not change.
+	
+	We do not reject the normality assumption on the ANOVA test on a $95\%$ confidence level (S-W $p=0.8318$, K-S $p=0.9147$) nor the homogeneity assumption (Lev $p=0.6634$). Therefore the ANOVA assumptions hold.
+	
+	\begin{figure}
+		\includegraphics[width=8cm]{contigency_1.png}
+		\centering
+		\caption{Contingency table between W and Z (quantiles of X4)}
+		\label{fig::contigency_1}
+	\end{figure}
+	
+\end{document}

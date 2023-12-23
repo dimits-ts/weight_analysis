@@ -8,6 +8,11 @@ filepath_png <- function(name) {
   return(file.path(RESOURCE_PATH, paste(name, ".png", sep = "")))
 }
 
+filepath <- function(filename) {
+  return(file.path(RESOURCE_PATH, filename))
+}
+
+
 # Utility function to save a plot to the disk.
 my_save_plot <- function(name, plot_func, ...) {
   # display plot
@@ -18,6 +23,7 @@ my_save_plot <- function(name, plot_func, ...) {
   plot_func(...)
   dev.off() # COMMENT THIS LINE TO PREVENT PLOT SAVING
 }
+
 
 # generates bins for lm model homoscedascity  
 quantcut <- function(x, digits=6) { 
