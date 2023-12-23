@@ -106,7 +106,7 @@
 	
 	We use the stepwise selection procedure with the full model being the valid model presented in Table \ref{tab::multi_fixed_1}.
 	
-	The resulting model can be found in Table \ref{tab::multi_optimal_1}. Note that the dimensionality of the model has indeed been significantly reduced and that almost all terms are statistically significant on a $95\%$ confidence level.
+	The resulting model can be found in Table \ref{tab::multi_optimal_1}. Note that the dimensionality of the model has been reduced by 1 (removed X4) and that almost all terms are statistically significant on a $95\%$ confidence level.
 	
 	The model presents no multi-colinearity issues. We do not reject the normality assumption on the new model on a $95\%$ confidence level (S-W $p=0.2006$, K-S $p=0.6342$) nor the homogeneity assumption (Lev $p=0.4434$, Bart $p=0.4434$). Therefore the LS regression assumptions hold.
 	
@@ -132,4 +132,188 @@
 		\label{fig::contigency_1}
 	\end{figure}
 	
+	
+	\section{Explaining Weight Loss}
+	
+	
+	\subsection{Exploring weight loss by workout and diet}
+	
+	The boxplots of Y depending on diet, workout and their interaction, can be found in Figure \ref{fig::boxplot_2}.
+	
+	\begin{figure}
+		\includegraphics[width=10cm]{boxplot_2.png}
+		\centering
+		\caption{Boxplots of Y depending on diet, workout and their interaction. "W" denotes the workout level and "D" the diet level.}
+		\label{fig::boxplot_2}
+	\end{figure}
+	
+	
+	\subsection{Weight loss depending on workout}
+	
+	Before we begin, we must check the parametric ANOVA assumptions. We reject the normality assumption (S-W $p=0$, K-S $p=0$) and the homogeneity assumption (Lev $p=0.0375$) on the same confidence level. Therefore the ANOVA assumptions do not hold and we need to use a non-parametric ANOVA test.
+
+	We run a non-parametric ANOVA test on weight loss depending on the diet. The ANOVA model may be described as $$
+	weightloss = \beta_1 Workout_2 + \beta_2 Workout_3 + \beta_0 + \epsilon, \epsilon \sim N(0, \sigma^2)
+	$$
+	where $Workout_2, Workout_3$ denote the workout level of the subject. Note that Workout Category 1 has been merged with the constant $\beta_0$.
+	
+	In our case
+	$$
+	weightloss = 17.094 Workout_2 + 2.675 Workout_3 + 413.6
+	$$
+	meaning that:
+	
+	\begin{itemize}
+		\item if the subject belongs to the workout category 1, they will have on average a weight loss of $413.6$ calories per day.
+		
+		\item if the subject belongs to the workout category 2, they will have on average a weight loss of $413.6 + 17.094 = 430.694$ calories per day.
+		
+		\item if the subject belongs to the workout category 3, they will have on average a weight loss of $413.6 + 2.675 = 416.275$ calories per day.
+	\end{itemize}
+	
+	However, we find no statistically significant differences in means on a $95\%$ confidence level (K-W $p=0.8194$), meaning that we should assume the model is in reality modeled as $weightloss = 413.6$. Additionally, we still reject the  homogeneity assumption on the same confidence level, therefore the ANOVA assumptions still do not hold and our analysis may be deficient.
+	
+	
+	\subsection{Is workout significant?}
+	
+	As explained above, the differences between the means of any of the different workout categories (levels) can not be assumed to be significant.
+	
+	
+	\subsection{Weight loss depending on the diet}
+	
+	We once again check the parametric ANOVA assumptions. We reject the normality assumption (S-W $p=0.0001$, K-S $p=0.0052$) and the homogeneity assumption (Lev $p=0.00011$) on the same confidence level. Therefore the ANOVA assumptions do not hold and we need to use a non-parametric ANOVA test.
+	
+	We run a non-parametric ANOVA test on weight loss depending on the diet. The model may be described as 
+	$$
+	weightloss = \beta_1 Diet_2 + \beta_2 Diet_3 + \beta_3 Diet_4 + \beta_0 + \epsilon, \epsilon \sim N(0, \sigma^2)
+	$$
+	where $Diet_2, Diet_3, Diet_4$ denote the diet category of the subject. Note that Diet Category 1 has been merged with the constant $\beta_0$.
+	
+	In our case,
+	$$
+	weightloss = 9.412 Diet_2 + 128.105 Diet_3 + 297.753 Diet_4 + 308.703
+	$$
+	meaning that:
+	
+	\begin{itemize}
+		\item if the subject belongs to Diet Category 1, they will have on average a weight loss of $308.703$ calories per day.
+		
+		\item if the subject belongs to the Diet Category 2, they will have on average a weight loss of $308.703 + 9.412 = 318.115$ calories per day.
+		
+		\item if the subject belongs to the Diet Category 3, they will have on average a weight loss of $308.703 + 128.105 = 436.808$ calories per day.
+		
+		\item if the subject belongs to the Diet Category 4, they will have on average a weight loss of $308.703 + 297.753 = 606.456$ calories per day.
+	\end{itemize}
+	
+	In this case, the difference in means on a $95\%$ confidence level are statistically significant (K-W $p=0$). However, we still reject the  homogeneity assumption, therefore the ANOVA assumptions still do not hold and our analysis may be deficient.
+	
+	
+	\subsection{Is diet significant?}
+	
+	While there are differences in the means between different Diet Categories not all may be significant. Since we had to use a non-parametric ANOVA test because of the violation of the normality assumption, we will be using the "Dunn Kruskal-Wallis Multiple Comparison" as a non-parametric post-hoc test.
+	
+	We find that all groups have statistically significant differences in means on a $95\%$ significance level (Dunn $p<0.0001$) except from the differences between Diet 1 and Diet 2 (Dunn $p=0.8$). Thus, Diet 1 may not be a significant treatment.
+	
+	
+	\subsection{Excluding the non-significant treatment}
+	
+	By eliminating Diet Category 1 from our dataset we end up with the model $weightloss = 118.694 Diet_3 + 288.341 Diet_4 + 318.115$. The differences in means are statistically significant on a $95\%$ confidence level (K-W $p=0$). 
+	
+	We use a non-parametric ANOVA test since we reject the normality assumption (S-W $p=0.0001$, K-S $p=0.0052$) and the homogeneity assumption (Lev $p=0.00011$) on the same confidence level. 
+	
+	
+	\subsection{Two-way ANOVA on main effects}
+	
+	We use a parametric ANOVA test since there are very few alternatives for non-parametric Two-way ANOVA tests \cite{non_param_anova}. Our model can be found in Table \ref{tab::main_2} and can be described as
+	
+	$$
+	weightloss = \alpha_1 Workout_2 + \alpha_2 Workout_3 + \beta_3 Diet_2 + \beta_4 Diet_3 + \beta_5 Diet_4 + \mu + \epsilon, \epsilon \sim N(0, \sigma^2)
+	$$
+	
+	where $Workout_2, Workout_3$ denote the workout level and $Diet_2, Diet_3, Diet_4$ denote the diet category of the subject.  Note that Diet Category 1 and Workout Category 1 have been merged with the constant $\beta_0$.
+	
+	In our case, 
+	$$
+	weightloss = - 13.4910 Workout_2 - 0.6886  Workout_3 + 9.7644 Diet_2 + 130.0720 Diet_3 + 299.4477 Diet_4 + 312.7557
+	$$ 
+	meaning that:
+	
+	\begin{itemize}
+		\item if the subject belongs to Workout Category 1 and Diet Category 1, they will on average experience a weight loss of $312.7557$ calories per day. 
+		
+		\item if the subject belongs to Diet Category 2, they will have on average an additional weight loss of $9.7644$ calories per day.
+		
+		\item if the subject belongs to Diet Category 3, they will have on average an additional weight loss of $130.0720$ calories per day.
+		
+		\item if the subject belongs to Diet Category 4, they will have on average an additional weight loss of $299.4477$ calories per day.
+		
+		\item if the subject belongs to Workout Category 2, they will have on average a reduction of weight loss (weight gain) of $13.4910$ calories per day.
+		
+		\item if the subject belongs to Workout Category 3, they will have on average a reduction of weight loss (weight gain) of $0.6886$ calories per day.
+	\end{itemize}
+	
+	We reject the normality assumption on a $95\%$ confidence level (S-W $p=0.0004$, K-S $p=0.01525$) but not the homogeneity assumption (Lev $p=0.2821$, Bart $p=0.3741$) on the same confidence level. Therefore the ANOVA assumptions do not hold and our analysis may be deficient, since we can not use a non-parametric test in this case.
+	
+	\input{output/main_2.tex}
+	
+	
+	\subsection{Excluding non-significant treatments}
+	We will be using the parametric TukeyHSD test, as there are no good non-parametric alternatives. All main effects seem to be statistically significant on a $95\%$ confidence level, apart from D2-D1 ($p=0.49$) and W3-W1 ($p=0.88$).
+	
+	By removing the non-statistically significant treatments we end up with the model 
+	$$
+	weightloss = -15.171 Workout_2 + 155.623 Diet_3 + 325.854 Diet_4 + 296.285 
+	$$ 
+	meaning that:
+	
+	\begin{itemize}
+		\item if the subject belongs to Workout Categories 1 or 3 and Diet Categories 1 or 2, they will on average experience a weight loss of $296.285$ calories per day (their workout and/or diet do not significantly change the weight loss). 
+		
+		\item if the subject belongs to Diet Category 3, they will have on average an additional weight loss of $155.623$ calories per day.
+		
+		\item if the subject belongs to Diet Category 4, they will have on average an additional weight loss of $325.854$ calories per day.
+		
+		\item if the subject belongs to Workout Category 2, they will have on average a reduction of weight loss (weight gain) of $15.171$ calories per day.
+
+	\end{itemize}
+	
+	We do not reject the normality assumption on a $95\%$ confidence level (S-W $p=0.7103$, K-S $p=0.7103$) nor the homogeneity assumption (Lev $p=0.6461$, Bart $p=0.7128$) on the same confidence level. Therefore the ANOVA assumptions hold. It therefore does appear that refocusing the model on the statistically important variables has fixed the normality issues previously encountered.
+	
+	
+	\subsection{Two-way ANOVA including interactions}
+	
+	The two-way ANOVA model including main effects and their interactions can be found in Table \ref{tab::full_2}. We notice that 
+	
+	\input{output/full_2.tex}
+	
+	We do not reject the normality assumption on a $95\%$ confidence level (S-W $p=0.4452$, K-S $p=0.7103$) nor the homogeneity assumption (Lev $p=0.3774$, Bart $p=0.4358$) on the same confidence level. Therefore the ANOVA assumptions hold. It would appear that including the interaction terms fixes the normality issues previously encountered.
+		
+		
+		
+	\subsection{Stepwise model selection}
+	
+	We use the stepwise selection procedure with the full model being the valid model presented in Table \ref{tab::full_2}.
+	
+	The selection does not return a different model by AIC, meaning that even the variables with non-statistically significant terms are necessary to keep AIC high.
+	
+	
+	\subsection{Interaction between workout, diet and loss }
+	
+	Figure \ref{fig::interaction_2} displays the differences in means between weight loss and different workout and diet categories.
+	
+	We observe that Diet Category 2 is the only one with a significant interaction (with Workout Category 3), as indicated by the change of slope. Generally however, while there are significant deviations in the means of weight loss depending on the Diet, the same can not be said about the Workout (no slope), corroborating our previous analysis.
+	
+	\begin{figure}
+		\includegraphics[width=10cm]{interaction_2.png}
+		\centering
+		\caption{Interaction plot of Two-way optimal ANOVA model, with the weight loss as the response, workout as the x-axis and diet as the trace variable.}
+		\label{fig::interaction_2}
+	\end{figure}
+	
+	
+	\subsection{Comparison with the Null model}
+	
+	We use the \code{anova} R command to execute a Partial-F test between the null (constant) model and the model with main effects. We observe that the main effects model is statistically better than the null ($p=0$). In the same way we observe that the main effects model with interactions is also better than the null ($p=0$).
+	
+	\printbibliography
 \end{document}
