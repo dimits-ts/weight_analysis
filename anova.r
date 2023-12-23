@@ -184,7 +184,7 @@ bartlett.test(optimal_model$res, qfits)
 # PREDICTION
 predin <- data.frame(X1=120, X2=30, X3=10, X4=90, W="B")
 predict(optimal_model, newdata=predin)
-predict(optimal_model, newdata=predin, interval = 'confidence', level = 0.95)
+predict(optimal_model, newdata=predin, interval = 'predict', level = 0.95)
 
 # CUT
 Z <- cut(data$X4, breaks=quantile(data$X4))

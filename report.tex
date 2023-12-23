@@ -11,6 +11,7 @@
 \usepackage{makecell}
 \usepackage{setspace}
 \usepackage{geometry}
+\usepackage{amsmath}
 
 \pagenumbering{arabic}
 \onehalfspacing % Set line spacing to 1.5
@@ -28,7 +29,7 @@
 		\maketitle
 		\begin{center}
 			
-			\LARGE Professors: I. Vrontos
+			\LARGE Tsirmpas Dimitris
 			
 			\large Athens University of Economics and Business
 			
@@ -40,6 +41,16 @@
 	
 	\tableofcontents
 	\newpage
+	
+	
+	\section{Introduction}
+	
+	This report follows the structure of the assignment; every section corresponds to a different part (dataset), and each subsection to a different assignment question.
+	
+	For the sake of brevity we will refer to the following statistical tests with the following acronyms: Shapiro Wilk (S-W) and Lilliefors (Kolmogorov-Smirnov) (K-S) normality tests, Bartlett (Bart) and Levene's (Lev) tests of homogeneity of variances, Tukeys Honest Significance Test (Tukey) and Dunn Kruskal-Wallis Multiple Comparison Test (Dunn).
+	
+	Additionally, we round down p-values lower than $0.000001$ to 0.
+	
 	
 	\section{ANOVA Testing}
 	
@@ -54,13 +65,13 @@
 		
 		\item There are no statistically significant differences between X3 and W  on a $90\%$ confidence level $p = 0.876$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.2555$, K-S $p=0.1112$). We reject the homogeneity assumption on a $90\%$ confidence level (Lev $p=0.0007$) and as such our results may not be accurate.
 		
-		\item There are statistically significant differences between X2 and W on a $95\%$ confidence level $p = 0.0168$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.4243$, K-S $p=0.4261$) and so does the homogeneity assumption (Lev $p=0.4261$).
+		\item There are statistically significant differences between X4 and W on a $95\%$ confidence level $p = 0.0168$. The normality assumptions hold on a $95\%$ confidence level (S-W $p=0.4243$, K-S $p=0.4261$) and so does the homogeneity assumption (Lev $p=0.4261$).
 		
 	\end{itemize}
 	 
 	
 	\begin{figure}
-		\includegraphics[width=8cm]{boxplots_1.png}
+		\includegraphics[width=10cm]{boxplots_1.png}
 		\centering
 		\caption{Boxplots of W in relation to the other variables.}
 		\label{fig::boxplots_1}
@@ -115,13 +126,15 @@
 	
 	\subsection{Estimating Y}
 	
-	When $X1=120, X2=30, X3=10, X4=90, W=B$ the stepwise model presented in Table \ref{tab::multi_optimal_1} predicts a value of $Y=200.6143$ with a $95\%$ confidence interval of $(200.1456 \leq Y \leq 201.083)$.
+	When $X1=120, X2=30, X3=10, X4=90, W=B$ the stepwise model presented in Table \ref{tab::multi_optimal_1} predicts a value of $Y=200.6143$ with a $95\%$ confidence interval of $(196.8005 \leq Y \leq 204.4281)$.
 	
 	
 	\subsection{Categorizing Continuous Variable}
 	The contingency table can be found in \ref{fig::contigency_1}.
 	
-	Executing the two-way ANOVA test between Y and W*Z, we determine that there are statistically significant differences in the means of Y depending on the two variables on a $95\%$ confidence interval (W: $p=5.12e-09$, Z: $p=0$) but not their interaction (W:Z $p= 0.305$). Therefore while the means deviate, the slope of Y to Z and Y to W does not change.
+	Executing the two-way ANOVA test between Y and W*Z, we determine that there are statistically significant differences in the means of Y depending on the two variables on a $95\%$ confidence interval (W: $p=5.12e-09$, Z: $p=0$) but not their interaction (W:Z $p= 0.305$). 
+	
+	Therefore while the mean of Y deviates depending on both the levels of Z and W individually, there is no significant interaction between them, even though there was a significant correlation between W and X4 (from which Z was generated).
 	
 	We do not reject the normality assumption on the ANOVA test on a $95\%$ confidence level (S-W $p=0.8318$, K-S $p=0.9147$) nor the homogeneity assumption (Lev $p=0.6634$). Therefore the ANOVA assumptions hold.
 	
@@ -134,7 +147,6 @@
 	
 	
 	\section{Explaining Weight Loss}
-	
 	
 	\subsection{Exploring weight loss by workout and diet}
 	
@@ -176,7 +188,7 @@
 	
 	\subsection{Is workout significant?}
 	
-	As explained above, the differences between the means of any of the different workout categories (levels) can not be assumed to be significant.
+	As explained above, the differences between the means of any of the different workout categories (levels) can not be assumed to be significant from the ANOVA test. Therefore we should not run any post-hoc tests.
 	
 	
 	\subsection{Weight loss depending on the diet}
@@ -227,14 +239,15 @@
 	We use a parametric ANOVA test since there are very few alternatives for non-parametric Two-way ANOVA tests \cite{non_param_anova}. Our model can be found in Table \ref{tab::main_2} and can be described as
 	
 	$$
-	weightloss = \alpha_1 Workout_2 + \alpha_2 Workout_3 + \beta_3 Diet_2 + \beta_4 Diet_3 + \beta_5 Diet_4 + \mu + \epsilon, \epsilon \sim N(0, \sigma^2)
+	weightloss = \alpha_1 Workout_2 + \alpha_2 Workout_3 + \beta_1 Diet_2 + \beta_2 Diet_3 + \beta_3 Diet_4 + \mu + \epsilon, \epsilon \sim N(0, \sigma^2)
 	$$
+	
 	
 	where $Workout_2, Workout_3$ denote the workout level and $Diet_2, Diet_3, Diet_4$ denote the diet category of the subject.  Note that Diet Category 1 and Workout Category 1 have been merged with the constant $\beta_0$.
 	
 	In our case, 
 	$$
-	weightloss = - 13.4910 Workout_2 - 0.6886  Workout_3 + 9.7644 Diet_2 + 130.0720 Diet_3 + 299.4477 Diet_4 + 312.7557
+	weightloss = - 13.491 Workout_2 - 0.688  Workout_3 + 9.764 Diet_2 + 130.072 Diet_3 + 299.447 Diet_4 + 312.755
 	$$ 
 	meaning that:
 	
@@ -309,9 +322,6 @@
 		\caption{Interaction plot of Two-way optimal ANOVA model, with the weight loss as the response, workout as the x-axis and diet as the trace variable.}
 		\label{fig::interaction_2}
 	\end{figure}
-	
-	
-	\subsection{Comparison with the Null model}
 	
 	We use the \code{anova} R command to execute a Partial-F test between the null (constant) model and the model with main effects. We observe that the main effects model is statistically better than the null ($p=0$). In the same way we observe that the main effects model with interactions is also better than the null ($p=0$).
 	
